@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT</title>
+</head>
+<body>
+
+    <video src="./userDrive/odo27/cube.mov" width="800px" height="600px" controls>
+    </video>
+    <div id="cube">
+    </div>
+    
+    <script>
+        cubeElement = document.getElementById('cube');
+        let language = parseInt(location.href.split('?')[1]);
+        console.log(language);
+        const cubeText = [
+            "제조연월: 2020년 4월 10일<br>색상: 6색<br>x축: 57mm<br>y축: 57mm<br>z축: 57mm<br>단위갯수: 26개<br>",
+            "Date of manufacture: April 10, 2020<br>Color: 6 colors<br>xAxis: 57 mm<br>y axis: 57 mm<br>z axis: 57 mm unit number: 26<br>",
+		"Année de fabrication: 10 avril 2020<br>Couleur: 6 couleurs<br>x axe: 57mm<br>y axe: 57mm<br>z axe: 57mm<br>nombre d'unités: 26<br>",
+		"Herstellungsjahr: 10 April 2020<br>Farbe: 6 Farben<br>x Achse: 57mm<br>y Achse: 57mm<br>z Anzahl: 57mm<br> der Einheiten: 26<br>"
+        ]
+       console.log(cubeText[1]);
+       console.log(cubeText[language]);
+       cubeElement.innerHTML = cubeText[language];
+    </script>
+</body>
+</html>

@@ -21,6 +21,17 @@
       </div>
     </form>
   </div>
+  <div class="col-6 my-5 mx-auto" style="text-align: center; border: solid;">
+    <div class="col-3 mx-auto pt-3" style="text-align: center; font-size: 30px;">
+      제품
+    </div>
+    <div class="col-12 mx-auto pb-3" style="text_align: center; font-size: 20px;">
+      <button onclick="goVision(0)">한국어</button>
+      <button onclick="goVision(1)">English</button>
+      <button onclick="goVision(2)">French</button>
+      <button onclick="goVision(3)">German</button>
+    </div>
+  </div>
 
   <div class="inDirectory mx-auto col-10 my-5 pb-5" style="text-align: center; border: solid;">
     <div class="pt-3"style="font-size: 30px;">
@@ -29,6 +40,9 @@
 
   </div>
   <script>
+    function goVision(num){
+      window.location.href = './vision.html?' + String(num);
+    };
     var dirName = location.href.split('?')[1];
     console.log(dirName);
     document.getElementById('savePath').value = dirName;
@@ -46,6 +60,10 @@
   .then(response => {
     var inDirectory = document.querySelector('.inDirectory');
     response.forEach(function(file) {
+      var downElement = document.createElement('button');
+      downElement.addEventListener('click', function() {
+        window.location.href = '/download/' + dirName + '/' + file;
+      });
       var fileElement = document.createElement('button');
       fileElement.innerHTML = file;
       fileElement.classList.add('px-5');
@@ -58,6 +76,7 @@
         window.location.href = './ply-viewer.html?' + dirName + '?' + fileElement.innerHTML;
       })
       inDirectory.appendChild(fileElement);
+      inDirectory.appendChild(downElement);
     });
   });
   </script>
