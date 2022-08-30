@@ -9,7 +9,7 @@ const fs = require('fs');
 
 const mysql = require('mysql');
 const conn = {
-  host: '34.64.245.91',
+  host: 'localhost',
   port: '3306',
   user: 'root',
   password: 'qwerasdf12',
@@ -48,6 +48,17 @@ var upload2 = multer({
   })
 });
 
+var flirupload = multer({
+  storage: multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, __dirname+'/public/userDrive/admin');
+    },
+    filename: function(req, file, cb) {
+      cb(null, file.originalname);
+    }
+  })
+});
+
 app.use(express.static('public'))
 
 app.listen(8080, function() {
@@ -59,15 +70,15 @@ app.get('/', function(req, res) {
 })
 
 app.post('/test/save', upload.array('IMG_FILE'), function(req, res) {
-  console.log(req.body.path);
-  console.log(req.files);
-  console.log(req.files.length);
+  console.log('req.body.path: ', req.body.path);
+  console.log('req.files: ', req.files);
+  console.log('req.files.length: ', req.files.length);
 
   for (let i=0; i<req.files.length; i++) {
 	  var oldname = __dirname + '/public/tempDir/' + req.files[i].originalname;
 	  var newname = __dirname + '/public/userDrive/' + req.body.path + '/' + req.files[i].originalname;
-	  console.log(oldname);
-	  console.log(newname);
+	  console.log('oldname: ', oldname);
+	  console.log('newname: ', newname);
     fs.rename(__dirname + '/public/tempDir/' + req.files[i].originalname, __dirname + '/public/userDrive/' + req.body.path + '/' + req.files[i].originalname, function (err) {
       if (err) {
         return console.error(err);
@@ -142,6 +153,18 @@ app.get('/download/:id/:file', function(req, res){
   }
 });
 
+app.get('/flir/:dir', function(req, res){
+  console.log(req.query);
+  var path = __dirname + '/public/userDrive/' + req.params.dir;
+  fs.readdir(path, (err, filelist) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(filelist);
+    }
+  })
+});
+
 app.get('/download/:file', function(req, res){
   var file = __dirname + '/' + req.params.file;
   res.download(file);
@@ -163,6 +186,10 @@ app.post('/upload', upload2.single('file'), function(req, res) {
   console.log('here');
   res.sendStatus(200);
 });
+
+app.post('/flirupload', flirupload.single('file'), function(req, res) {
+  res.sendStatus(200);
+})
 
 app.get('/vision', function(req, res) {
   res.sendFile(__dirname + '/public/vision.html');
